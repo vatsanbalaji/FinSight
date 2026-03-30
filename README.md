@@ -37,8 +37,12 @@ I also learned that a strong demo and clear story matter just as much as technic
 JavaScript, HTML, CSS, Cloudflare Workers, Cloudflare D1, REST APIs, GitHub, and GitHub Pages.
 
 ## Repo Setup
-The frontend is hosted with GitHub Pages and the backend is deployed with Cloudflare Workers.  
+The frontend is hosted with Github Repo as an index.html file and the backend is deployed with Cloudflare Workers.  
 Secrets are stored in Cloudflare Worker secrets and are not included in this repository.
+
+## Security / Demo Notes
+Some finance analysis endpoints are intentionally public for live demo use.  
+Persistence and user-specific routes are protected with an app token through the Worker backend.
 
 ## Live Demo 
 Backend: https://finsight-worker.goatsatcoding.workers.dev/
