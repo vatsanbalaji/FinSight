@@ -40,8 +40,7 @@ JavaScript, HTML, CSS, Cloudflare Workers, Cloudflare D1, REST APIs, GitHub, and
 The frontend is hosted with GitHub Pages and the backend is deployed with Cloudflare Workers.  
 Secrets are stored in Cloudflare Worker secrets and are not included in this repository.
 
-## Live Demo
-Frontend:  
+## Live Demo 
 Backend: https://finsight-worker.goatsatcoding.workers.dev/
 
 ## Submission Notes
