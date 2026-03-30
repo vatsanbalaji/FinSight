@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FinSight Pro — Deployment Ready</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#07090f;--bg2:#0c0f1a;--bg3:#101726;--panel:#101723;--panel2:#141d2e;
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.13);
+  --gold:#d4a84b;--gold2:#f0c96a;--gold-dim:rgba(212,168,75,.14);
+  --green:#1fd97a;--red:#f0506a;--blue:#4fa3ff;
+  --text:#eef0f6;--text2:#96a2b8;--text3:#5e6f8a;
+  --serif:'Playfair Display',serif;--sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:var(--sans);color:var(--text);background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(212,168,75,.06),transparent 55%),var(--bg)}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(212,168,75,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(212,168,75,.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(7,9,15,.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--border);z-index:50}
+.logo{display:flex;gap:10px;align-items:center}.hex{width:22px;height:22px;background:var(--gold);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.brand{font-weight:800}.brand span{color:var(--gold)} .chip{padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--bg3);font-size:12px;color:var(--text2)}
+main{padding:84px 22px 24px;max-width:1460px;margin:0 auto}
+.hidden{display:none!important}
+.page{display:none}.page.active{display:block}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}
+.eye{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:800}
+.title{font-family:var(--serif);font-size:34px;line-height:1.08;margin-top:6px}
+.sub{color:var(--text2);margin-top:6px;font-size:14px;line-height:1.55}
+.row{display:grid;gap:16px}.row2{grid-template-columns:1.3fr .7fr}.row3{grid-template-columns:repeat(3,1fr)}.row4{grid-template-columns:repeat(4,1fr)}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.ph{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.pt{font-weight:700}.tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);padding:4px 8px;border-radius:999px;background:var(--gold-dim)}
+.pb{padding:18px}
+.metric{padding:18px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--panel);border:1px solid var(--border)}
+.metric .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);font-weight:800;margin-bottom:10px}
+.metric .val{font-family:var(--serif);font-size:30px;line-height:1}
+.metric .delta{font-size:12px;font-weight:700;margin-top:8px}.up{color:var(--green)}.down{color:var(--red)}.neu{color:var(--gold)}
+.metric .desc{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.45}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabbtn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:9px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+.tabbtn.active{color:var(--gold);border-color:rgba(212,168,75,.35);background:var(--gold-dim)}
+input,select,textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:11px 12px;border-radius:10px;font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,168,75,.12)}
+textarea{min-height:120px;resize:vertical}
+label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:800;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.btn{background:var(--gold);color:#06080e;border:none;padding:11px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn.secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn.inline{width:auto}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.note{padding:12px 14px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.6}
+.good{border-color:rgba(31,217,122,.28)} .warn{border-color:rgba(212,168,75,.28)} .bad{border-color:rgba(240,80,106,.28)}
+.small{font-size:12px;color:var(--text2)}
+.mono{font-family:var(--mono)}
+.table{width:100%;border-collapse:collapse;font-size:12px}.table th{color:var(--text3);text-align:left;padding:8px;border-bottom:1px solid var(--border);text-transform:uppercase;font-size:10px;letter-spacing:1px}
+.table td{padding:9px 8px;border-bottom:1px solid var(--border);color:var(--text2)} .table td:first-child{color:var(--text)}
+.chatwrap{display:flex;flex-direction:column;height:420px}.chatmsgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:84%;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.6;white-space:pre-wrap}.msg.ai{align-self:flex-start;background:var(--bg3);border:1px solid var(--border)}.msg.user{align-self:flex-end;background:var(--gold-dim);border:1px solid rgba(212,168,75,.2);color:var(--gold2)}
+.chatbar{display:flex;gap:10px;padding:12px;border-top:1px solid var(--border)}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}.kv span:last-child{font-weight:700;color:var(--text);text-align:right}
+.step{padding:18px}.authshell{max-width:720px;margin:40px auto}.authcard{background:var(--panel);border:1px solid var(--border2);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.dots{display:flex;gap:7px}.dot{width:8px;height:8px;border-radius:999px;background:var(--border2)}.dot.active{background:var(--gold)}
+.footerpad{height:24px}.itemRow{display:grid;grid-template-columns:1.6fr 1fr auto;gap:10px;margin-bottom:10px}.pillRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pill{padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg3);font-size:12px;color:var(--text2)}
+.banner{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--panel2);margin-bottom:16px}
+.bannerTitle{font-weight:800;color:var(--text)} .bannerText{font-size:13px;color:var(--text2);line-height:1.55;margin-top:4px}
+.ul{margin:8px 0 0 18px;padding:0}.ul li{margin:7px 0;color:var(--text2)}
+.scenarioItem{padding:10px 0;border-bottom:1px solid var(--border)}
+.scenarioActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.toast{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--panel2);border:1px solid var(--border2);color:var(--text);padding:12px 14px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.25);opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translateY(0)}
+.sensGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.sensCell{padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--bg3)}
+.sensCell .k{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:800}.sensCell .v{margin-top:6px;font-weight:700}
+@media (max-width:1100px){.row2,.row3,.row4{grid-template-columns:1fr}.hero{flex-direction:column;align-items:start}.chatwrap{height:380px}}
+@media (max-width:760px){main{padding:80px 14px 20px}.grid2,.grid3{grid-template-columns:1fr}.itemRow{grid-template-columns:1fr}.topbar{padding:0 14px}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="topbar">
+  <div class="logo"><div class="hex"></div><div class="brand">FinSight <span>Pro</span></div></div>
+  <div class="chip" id="statusChip">Not connected</div>
+</div>
+
+<!-- ======= WORKER CONFIG: EDIT THIS BLOCK ONLY ======= -->
+<script>
+const WORKER_CONFIG = {
+  WORKER_BASE_URL: "https://finsight-worker.goatsatcoding.workers.dev/",
+  APP_TOKEN: "" // optional; match APP_TOKEN secret if you set one in Cloudflare
+};
+</script>
+<!-- ======= END WORKER CONFIG BLOCK ======= -->
+
+<main>
+  <section id="authPage" class="page active">
+    <div class="authshell">
+      <div class="authcard">
+        <div class="step">
+          <div class="logo" style="margin-bottom:18px"><div class="hex"></div><div class="brand">FinSight <span>Pro</span></div></div>
+          <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="title" style="font-size:28px;margin-top:16px">Build your finance workspace</div>
+          <div class="sub">This version is optimized for hackathon judging: a polished frontend, Worker-backed persistence, reusable scenarios, and finance analysis that feels like a product instead of a prototype.</div>
+          <div class="pillRow">
+            <div class="pill">Cloudflare Worker + D1</div>
+            <div class="pill">DCF / Credit / Budget</div>
+            <div class="pill">Scenario persistence</div>
+            <div class="pill">AI finance copilot</div>
+          </div>
+        </div>
+        <div class="step" id="step1">
+          <div class="actions" style="margin-bottom:12px">
+            <button class="btn secondary inline" onclick="applyDemoProfile()">Use Demo Company</button>
+            <button class="btn secondary inline" onclick="clearWorkspace()">Reset</button>
+          </div>
+          <div class="grid2">
+            <div><label>Your Name</label><input id="userName" value="Alex Chen"></div>
+            <div><label>Company Name</label><input id="companyName" value="Acme Corp"></div>
+          </div>
+          <div class="grid2" style="margin-top:12px">
+            <div><label>Industry</label><select id="industry"><option>Technology / SaaS</option><option>Manufacturing</option><option>Healthcare</option><option>Financial Services</option><option>Retail / E-Commerce</option><option>Energy</option><option>Professional Services</option></select></div>
+            <div><label>Stage</label><select id="stage"><option>Growth Stage</option><option>Early Stage</option><option>Late Stage</option><option>Enterprise</option><option>Public Company</option></select></div>
+          </div>
+          <div class="actions" style="margin-top:14px"><button class="btn" onclick="nextStep(2)">Continue</button></div>
+        </div>
+        <div class="step hidden" id="step2">
+          <div class="dots"><div class="dot"></div><div class="dot active"></div><div class="dot"></div></div>
+          <div class="grid2" style="margin-top:14px">
+            <div><label>Annual Revenue</label><input id="revenue" type="number" value="5000000"></div>
+            <div><label>Employees</label><input id="employees" type="number" value="45"></div>
+          </div>
+          <div class="grid2" style="margin-top:12px">
+            <div><label>EBITDA</label><input id="ebitda" type="number" value="1200000"></div>
+            <div><label>Net Income</label><input id="netIncome" type="number" value="600000"></div>
+          </div>
+          <div class="actions" style="margin-top:14px"><button class="btn secondary" onclick="nextStep(1)">Back</button><button class="btn" onclick="nextStep(3)">Continue</button></div>
+        </div>
+        <div class="step hidden" id="step3">
+          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
+          <div class="grid2" style="margin-top:14px">
+            <div><label>Debt</label><input id="debt" type="number" value="2000000"></div>
+            <div><label>Equity</label><input id="equity" type="number" value="4000000"></div>
+          </div>
+          <div style="margin-top:12px"><label>Primary Goal</label><select id="goal"><option>Improve profitability margins</option><option>Raise capital / funding</option><option>Reduce debt</option><option>Expand into new markets</option><option>Prepare for acquisition</option></select></div>
+          <div style="margin-top:12px"><label>Biggest Challenge</label><select id="challenge"><option>Cash flow management</option><option>Working capital management</option><option>Low profit margins</option><option>Revenue concentration risk</option><option>Capital allocation decisions</option></select></div>
+          <div class="actions" style="margin-top:14px"><button class="btn secondary" onclick="nextStep(2)">Back</button><button class="btn" onclick="launchApp()">Launch Workspace</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="appPage" class="page">
+    <div class="banner">
+      <div>
+        <div class="bannerTitle">Judge-facing product story</div>
+        <div class="bannerText">FinSight helps founders and operators turn raw company metrics into board-ready decisions: valuation, credit quality, budget planning, scenario analysis, and AI-guided investor messaging.</div>
+      </div>
+      <div class="tag" id="connectionTag">Awaiting Worker</div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <div class="eye">Deployment Ready</div>
+        <div class="title">Corporate finance intelligence for demo day</div>
+        <div class="sub" id="heroSub">Connected to your Worker backend, with persistent profiles, scenarios, and AI advising.</div>
+      </div>
+      <div class="tabs">
+        <button class="tabbtn active" onclick="showTab('dashboard', this)">Dashboard</button>
+        <button class="tabbtn" onclick="showTab('valuation', this)">DCF / NPV</button>
+        <button class="tabbtn" onclick="showTab('credit', this)">Credit</button>
+        <button class="tabbtn" onclick="showTab('budget', this)">Budget</button>
+        <button class="tabbtn" onclick="showTab('advisor', this)">AI Advisor</button>
+        <button class="tabbtn" onclick="showTab('settings', this)">Settings</button>
+      </div>
+    </div>
+
+    <section id="tab-dashboard" class="page active">
+      <div class="row row4" id="metricGrid"></div>
+      <div class="row row2" style="margin-top:16px">
+        <div class="panel">
+          <div class="ph"><div class="pt">Revenue & EBITDA Trend</div><div class="tag">Modeled</div></div>
+          <div class="pb"><canvas id="trendChart" height="120"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="ph"><div class="pt">Import Financial CSV</div><div class="tag">Worker Persisted</div></div>
+          <div class="pb">
+            <div class="note warn">Paste CSV with headers like <span class="mono">metric,amount</span>. Example rows: <span class="mono">Revenue,5000000</span>, <span class="mono">EBITDA,1200000</span>, <span class="mono">Debt,2000000</span>.</div>
+            <textarea id="csvText" style="margin-top:10px">metric,amount
+Revenue,5000000
+EBITDA,1200000
+Debt,2000000
+Equity,4000000
+Net Income,600000</textarea>
+            <div class="actions" style="margin-top:10px"><button class="btn" onclick="importCSV()">Import CSV</button><button class="btn secondary" onclick="saveProfile()">Save Profile</button></div>
+            <div id="importResult" class="small" style="margin-top:10px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row row3" style="margin-top:16px">
+        <div class="panel"><div class="ph"><div class="pt">Capital Structure</div><div class="tag">Snapshot</div></div><div class="pb"><canvas id="capChart" height="180"></canvas></div></div>
+        <div class="panel"><div class="ph"><div class="pt">Executive Insight</div><div class="tag">Grounded</div></div><div class="pb" id="execInsight"></div></div>
+        <div class="panel"><div class="ph"><div class="pt">Saved Scenarios</div><div class="tag">D1</div></div><div class="pb"><div class="actions"><input id="scenarioName" placeholder="Board Base Case" /><button class="btn inline" onclick="saveScenario()">Save</button></div><div id="scenarioList" style="margin-top:12px"></div></div></div>
+      </div>
+    </section>
+
+    <section id="tab-valuation" class="page">
+      <div class="row row2">
+        <div class="panel">
+          <div class="ph"><div class="pt">DCF Inputs</div><div class="tag">Valuation</div></div>
+          <div class="pb">
+            <div class="grid2">
+              <div><label>Initial Investment</label><input id="dcfInvestment" type="number" value="500000"></div>
+              <div><label>WACC (%)</label><input id="dcfWacc" type="number" value="10"></div>
+            </div>
+            <div style="margin-top:12px"><label>Terminal Growth (%)</label><input id="dcfTerminalGrowth" type="number" value="3"></div>
+            <div style="margin-top:12px"><label>Cash Flows (comma-separated)</label><input id="dcfCashFlows" value="120000,148000,172000,201000,235000,265000"></div>
+            <div class="actions" style="margin-top:12px"><button class="btn" onclick="runDCF()">Run DCF</button></div>
+            <div id="dcfSummary" style="margin-top:14px"></div>
+            <div id="dcfSensitivity"></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel"><div class="ph"><div class="pt">PV Waterfall</div><div class="tag">Chart</div></div><div class="pb"><canvas id="dcfChart" height="210"></canvas></div></div>
+          <div class="panel" style="margin-top:16px"><div class="ph"><div class="pt">DCF Schedule</div></div><div class="pb" style="max-height:320px;overflow:auto"><table class="table" id="dcfTable"></table></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-credit" class="page">
+      <div class="row row2">
+        <div class="panel">
+          <div class="ph"><div class="pt">Credit Inputs</div><div class="tag">Risk</div></div>
+          <div class="pb">
+            <div class="grid2">
+              <div><label>EBITDA</label><input id="crEbitda" type="number" value="1200000"></div>
+              <div><label>Total Debt</label><input id="crDebt" type="number" value="2000000"></div>
+            </div>
+            <div class="grid2" style="margin-top:12px">
+              <div><label>Equity</label><input id="crEquity" type="number" value="4000000"></div>
+              <div><label>Interest Expense</label><input id="crInterest" type="number" value="180000"></div>
+            </div>
+            <div class="grid2" style="margin-top:12px">
+              <div><label>Current Assets</label><input id="crAssets" type="number" value="1200000"></div>
+              <div><label>Current Liabilities</label><input id="crLiabilities" type="number" value="600000"></div>
+            </div>
+            <div class="actions" style="margin-top:12px"><button class="btn" onclick="runCredit()">Analyze Credit</button></div>
+            <div id="creditSummary" style="margin-top:14px"></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel"><div class="ph"><div class="pt">Credit Radar</div><div class="tag">Visualization</div></div><div class="pb"><canvas id="creditChart" height="210"></canvas></div></div>
+          <div class="panel" style="margin-top:16px"><div class="ph"><div class="pt">Key Ratios</div></div><div class="pb" id="creditRatios"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-budget" class="page">
+      <div class="row row2">
+        <div class="panel">
+          <div class="ph"><div class="pt">Budget Builder</div><div class="tag">P&L</div></div>
+          <div class="pb">
+            <label>Revenue Items</label>
+            <div id="revItems"></div>
+            <button class="btn secondary inline" onclick="addBudgetRow('revItems','Revenue Stream',100000)">Add Revenue</button>
+            <label style="margin-top:14px">COGS Items</label>
+            <div id="cogsItems"></div>
+            <button class="btn secondary inline" onclick="addBudgetRow('cogsItems','COGS Item',25000)">Add COGS</button>
+            <label style="margin-top:14px">OpEx Items</label>
+            <div id="opexItems"></div>
+            <button class="btn secondary inline" onclick="addBudgetRow('opexItems','Expense Item',15000)">Add OpEx</button>
+            <div style="margin-top:14px"><label>Depreciation</label><input id="budgetDep" type="number" value="85000"></div>
+            <div class="actions" style="margin-top:12px"><button class="btn" onclick="runBudget()">Generate P&L</button></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel"><div class="ph"><div class="pt">P&L Summary</div><div class="tag">Output</div></div><div class="pb" id="budgetSummary"></div></div>
+          <div class="panel" style="margin-top:16px"><div class="ph"><div class="pt">Waterfall</div><div class="tag">Chart</div></div><div class="pb"><canvas id="budgetChart" height="210"></canvas></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-advisor" class="page">
+      <div class="row row2">
+        <div class="panel">
+          <div class="ph"><div class="pt">AI Finance Advisor</div><div class="tag">Worker Routed</div></div>
+          <div class="chatwrap">
+            <div class="chatmsgs" id="chatMsgs"></div>
+            <div class="chatbar">
+              <input id="chatInput" placeholder="Ask about valuation, leverage, pricing, capital raises, or investor readiness..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="btn inline" onclick="sendChat()">Send</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><div class="pt">Suggested Questions</div><div class="tag">Demo Friendly</div></div>
+          <div class="pb">
+            <div class="actions" style="flex-direction:column;align-items:stretch">
+              <button class="btn secondary" onclick="askPreset('What does my capital structure imply about financing risk?')">Capital structure risk</button>
+              <button class="btn secondary" onclick="askPreset('How should I explain my DCF assumptions to a judge?')">DCF explanation</button>
+              <button class="btn secondary" onclick="askPreset('What are the strongest investor talking points from my numbers?')">Investor talking points</button>
+              <button class="btn secondary" onclick="askPreset('How should I improve margins over the next 12 months?')">Margin improvement plan</button>
+            </div>
+            <div class="note" style="margin-top:14px">When your Worker has <span class="mono">OPENAI_API_KEY</span> set, chat becomes model-backed. Without it, the Worker still answers with a grounded local finance fallback, so the demo stays functional.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-settings" class="page">
+      <div class="row row2">
+        <div class="panel">
+          <div class="ph"><div class="pt">Workspace Settings</div><div class="tag">Live User View</div></div>
+          <div class="pb">
+            <div class="note good" id="settingsSummary">Your active workspace settings and finance profile are shown below.</div>
+            <div class="kv"><span>User Name</span><span id="settingsUserName">—</span></div>
+            <div class="kv"><span>Company Name</span><span id="settingsCompanyName">—</span></div>
+            <div class="kv"><span>Industry</span><span id="settingsIndustry">—</span></div>
+            <div class="kv"><span>Stage</span><span id="settingsStage">—</span></div>
+            <div class="kv"><span>Primary Goal</span><span id="settingsGoal">—</span></div>
+            <div class="kv"><span>Biggest Challenge</span><span id="settingsChallenge">—</span></div>
+            <div class="actions" style="margin-top:14px"><button class="btn secondary" onclick="saveProfile()">Save Current Settings</button><button class="btn secondary" onclick="exportWorkspace()">Export Workspace JSON</button></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><div class="pt">Financial & Session Settings</div><div class="tag">Current Session</div></div>
+          <div class="pb">
+            <div class="kv"><span>Annual Revenue</span><span id="settingsRevenue">—</span></div>
+            <div class="kv"><span>Employees</span><span id="settingsEmployees">—</span></div>
+            <div class="kv"><span>EBITDA</span><span id="settingsEbitda">—</span></div>
+            <div class="kv"><span>Net Income</span><span id="settingsNetIncome">—</span></div>
+            <div class="kv"><span>Debt</span><span id="settingsDebt">—</span></div>
+            <div class="kv"><span>Equity</span><span id="settingsEquity">—</span></div>
+            <div class="kv"><span>Workspace ID</span><span id="workspaceIdView" class="mono"></span></div>
+            <div class="kv"><span>Connection State</span><span id="connectionState">Not connected</span></div>
+            <div class="kv"><span>AI Mode</span><span id="settingsAiMode">Checking…</span></div>
+            <div class="actions" style="margin-top:14px"><button class="btn secondary" onclick="location.reload()">Reload App</button><button class="btn secondary" onclick="clearWorkspace()">Reset Workspace</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="footerpad"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const state = {
+  workspaceId: localStorage.getItem("finsight_workspace_id") || ("ws_" + Math.random().toString(36).slice(2,10)),
+  profile: null,
+  history: [],
+  charts: {},
+  boot: null,
+  connection: 'offline'
+};
+localStorage.setItem("finsight_workspace_id", state.workspaceId);
+
+function nextStep(step) {
+  document.querySelectorAll('#authPage .step').forEach((el,i)=>{ if(i>0) el.classList.add('hidden'); });
+  document.getElementById('step'+step).classList.remove('hidden');
+}
+
+function showTab(name, btn){
+  document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('#appPage > section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function money(n){
+  const abs=Math.abs(Number(n)||0), sign=n<0?'-':'';
+  if(abs>=1e9) return `${sign}$${(abs/1e9).toFixed(2)}B`;
+  if(abs>=1e6) return `${sign}$${(abs/1e6).toFixed(2)}M`;
+  if(abs>=1e3) return `${sign}$${(abs/1e3).toFixed(1)}K`;
+  return `${sign}$${abs.toFixed(0)}`;
+}
+function pct(n){ return `${((Number(n)||0)*100).toFixed(1)}%`; }
+function val(id){ return document.getElementById(id).value; }
+function num(id){ return Number(document.getElementById(id).value)||0; }
+
+function toast(message){
+  const el = document.getElementById('toast');
+  el.textContent = message;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+
+function workerConfigured(){
+  return Boolean(WORKER_CONFIG.WORKER_BASE_URL) && !WORKER_CONFIG.WORKER_BASE_URL.includes("PASTE_YOUR_WORKER_URL_HERE");
+}
+
+function api(path, options={}){
+  if(!workerConfigured()){
+    return Promise.reject(new Error("Paste your Worker URL into the WORKER_CONFIG block near the top of the HTML file."));
+  }
+  const headers = Object.assign({ 'Content-Type':'application/json' }, options.headers || {});
+  if(WORKER_CONFIG.APP_TOKEN) headers['x-app-token'] = WORKER_CONFIG.APP_TOKEN;
+  return fetch(WORKER_CONFIG.WORKER_BASE_URL.replace(/\/$/, '') + path, Object.assign({}, options, { headers }))
+    .then(async res=>{
+      const data = await res.json().catch(()=>({ ok:false, error:'Invalid JSON response' }));
+      if(!res.ok || data.ok === false) throw new Error(data.error || `Request failed (${res.status})`);
+      return data;
+    });
+}
+
+function collectProfile(){
+  return {
+    userName: val('userName'),
+    companyName: val('companyName'),
+    industry: val('industry'),
+    stage: val('stage'),
+    revenue: num('revenue'),
+    employees: num('employees'),
+    ebitda: num('ebitda'),
+    debt: num('debt'),
+    equity: num('equity'),
+    netIncome: num('netIncome'),
+    goal: val('goal'),
+    challenge: val('challenge')
+  };
+}
+
+function applyProfileToForm(p){
+  if(!p) return;
+  const mapping = {
+    userName:p.userName, companyName:p.companyName, industry:p.industry, stage:p.stage,
+    revenue:p.revenue, employees:p.employees, ebitda:p.ebitda, debt:p.debt, equity:p.equity,
+    netIncome:p.netIncome, goal:p.goal, challenge:p.challenge
+  };
+  Object.entries(mapping).forEach(([k,v])=>{
+    const el = document.getElementById(k);
+    if(el && v !== undefined && v !== null) el.value = v;
+  });
+}
+
+function applyDemoProfile(){
+  const p = {
+    userName:'Jordan Lee',
+    companyName:'Northstar Analytics',
+    industry:'Technology / SaaS',
+    stage:'Growth Stage',
+    revenue:6200000,
+    employees:52,
+    ebitda:1320000,
+    debt:1850000,
+    equity:4700000,
+    netIncome:690000,
+    goal:'Raise capital / funding',
+    challenge:'Working capital management'
+  };
+  applyProfileToForm(p);
+  localStorage.setItem("finsight_profile", JSON.stringify(p));
+  toast('Loaded demo company');
+}
+
+function clearWorkspace(){
+  localStorage.removeItem('finsight_profile');
+  localStorage.removeItem('finsight_workspace_id');
+  location.reload();
+}
+
+async function launchApp(){
+  state.profile = collectProfile();
+  localStorage.setItem("finsight_profile", JSON.stringify(state.profile));
+  document.getElementById('authPage').classList.remove('active');
+  document.getElementById('authPage').style.display='none';
+  document.getElementById('appPage').style.display='block';
+  document.getElementById('appPage').classList.add('active');
+  hydrateSettings();
+  seedBudgetRows();
+  renderDashboard();
+  await renderExecutiveInsight();
+  if(workerConfigured()){
+    runDCF();
+    runCredit();
+    runBudget();
+  }
+  safeConnect();
+}
+
+function hydrateSettings(){
+  const profile = state.profile || collectProfile();
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+
+  setText('settingsUserName', profile.userName || '—');
+  setText('settingsCompanyName', profile.companyName || '—');
+  setText('settingsIndustry', profile.industry || '—');
+  setText('settingsStage', profile.stage || '—');
+  setText('settingsGoal', profile.goal || '—');
+  setText('settingsChallenge', profile.challenge || '—');
+  setText('settingsRevenue', money(profile.revenue || 0));
+  setText('settingsEmployees', String(profile.employees ?? '—'));
+  setText('settingsEbitda', money(profile.ebitda || 0));
+  setText('settingsNetIncome', money(profile.netIncome || 0));
+  setText('settingsDebt', money(profile.debt || 0));
+  setText('settingsEquity', money(profile.equity || 0));
+  setText('workspaceIdView', state.workspaceId);
+  setText('connectionState', state.connection);
+  setText('settingsAiMode', state.boot ? (state.boot.hasOpenAI ? 'Real AI enabled' : 'Fallback finance AI') : 'Checking…');
+  setText('settingsSummary', `${profile.userName || 'This user'} is currently viewing the ${profile.companyName || 'active'} workspace for a ${profile.stage || 'business'} in ${profile.industry || 'its selected industry'}.`);
+}
+
+function setConnection(status, detail=''){
+  state.connection = status;
+  document.getElementById('connectionState').textContent = status;
+  const chip = document.getElementById('statusChip');
+  const tag = document.getElementById('connectionTag');
+  const map = {
+    offline:['Needs deployment','Awaiting Worker'],
+    fallback:['Connected · fallback AI','Connected'],
+    ai:['Connected · AI enabled','AI Enabled']
+  };
+  const [chipText, tagText] = map[status] || [status, status];
+  chip.textContent = chipText + (detail ? ` · ${detail}` : '');
+  tag.textContent = tagText;
+  hydrateSettings();
+}
+
+function seedBudgetRows(){
+  if(document.getElementById('revItems').children.length) return;
+  addBudgetRow('revItems','Product Sales',2500000);
+  addBudgetRow('revItems','Subscriptions',1500000);
+  addBudgetRow('revItems','Services',1000000);
+  addBudgetRow('cogsItems','Cost of Revenue',1000000);
+  addBudgetRow('cogsItems','Direct Labor',400000);
+  addBudgetRow('opexItems','Salaries & Benefits',900000);
+  addBudgetRow('opexItems','Marketing & Sales',350000);
+  addBudgetRow('opexItems','R&D',240000);
+  addBudgetRow('opexItems','G&A',180000);
+}
+
+function addBudgetRow(containerId, label, amount){
+  const wrap = document.createElement('div');
+  wrap.className='itemRow';
+  wrap.innerHTML = `<input value="${escapeAttr(label)}"><input type="number" value="${Number(amount)||0}"><button class="btn secondary inline" onclick="this.parentElement.remove()">Remove</button>`;
+  document.getElementById(containerId).appendChild(wrap);
+}
+
+function getBudgetItems(containerId){
+  return [...document.getElementById(containerId).children].map(row=>({
+    name: row.children[0].value || 'Item',
+    amount: Number(row.children[1].value)||0
+  }));
+}
+
+function renderDashboard(){
+  const p = state.profile;
+  const ebitdaMargin = p.revenue ? p.ebitda / p.revenue : 0;
+  const netMargin = p.revenue ? p.netIncome / p.revenue : 0;
+  const debtToEbitda = p.ebitda ? p.debt / p.ebitda : 0;
+  const debtToEquity = p.equity ? p.debt / p.equity : 0;
+  const metrics = [
+    {label:'Annual Revenue', value:money(p.revenue), delta:'Top-line scale', cls:'up', desc:'Core revenue base for the investment story'},
+    {label:'EBITDA Margin', value:pct(ebitdaMargin), delta:ebitdaMargin>=.2?'Healthy margin profile':'Margin watch', cls:ebitdaMargin>=.2?'up':'neu', desc:'Operating profitability judges can understand fast'},
+    {label:'Debt / EBITDA', value:debtToEbitda.toFixed(2)+'x', delta:debtToEbitda<=3?'Comfortable leverage':'Higher leverage', cls:debtToEbitda<=3?'up':'down', desc:'Simple credit-risk signal for lenders and investors'},
+    {label:'Debt / Equity', value:debtToEquity.toFixed(2)+'x', delta:netMargin>=.1?'Profitable capital base':'Balance sheet watch', cls:'neu', desc:'Capital structure mix between debt and shareholder support'}
+  ];
+  document.getElementById('metricGrid').innerHTML = metrics.map(m=>`
+    <div class="metric">
+      <div class="lbl">${m.label}</div>
+      <div class="val">${m.value}</div>
+      <div class="delta ${m.cls}">${m.delta}</div>
+      <div class="desc">${m.desc}</div>
+    </div>`).join('');
+
+  const months = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  const revBase = p.revenue/12;
+  const rev = months.map((_,i)=> Math.round(revBase*(0.86 + i*0.012 + (Math.sin(i)*0.03))));
+  const ebd = rev.map(v=>Math.round(v * (ebitdaMargin || 0.18)));
+  chart('trendChart', 'bar', {
+    labels: months,
+    datasets:[
+      {label:'Revenue', data: rev, backgroundColor:'rgba(212,168,75,.32)', borderColor:'#d4a84b', borderWidth:1.4, borderRadius:4},
+      {label:'EBITDA', data: ebd, backgroundColor:'rgba(31,217,122,.16)', borderColor:'#1fd97a', borderWidth:1.4, borderRadius:4}
+    ]
+  }, axesOpts());
+
+  chart('capChart','doughnut',{
+    labels:['Equity','Debt'],
+    datasets:[{data:[p.equity,p.debt],backgroundColor:['rgba(212,168,75,.72)','rgba(79,163,255,.7)'],borderWidth:2,borderColor:'#101723'}]
+  }, {
+    plugins:{legend:{labels:{color:'#96a2b8',font:{family:'Plus Jakarta Sans',size:11}}}}
+  });
+}
+
+async function renderExecutiveInsight(){
+  const p = state.profile;
+  const fallback = `
+    <div class="note">
+      <strong style="color:var(--gold)">Growth profile:</strong> ${escapeHtml(p.companyName)} is a ${escapeHtml(p.stage.toLowerCase())} company in ${escapeHtml(p.industry)}, generating ${money(p.revenue)} in revenue.<br><br>
+      <strong style="color:var(--gold)">Capital posture:</strong> debt is ${money(p.debt)} against ${money(p.equity)} of equity, with EBITDA at ${money(p.ebitda)}.<br><br>
+      <strong style="color:var(--gold)">Judge takeaway:</strong> the cleanest next-step story is ${escapeHtml(p.goal.toLowerCase())}, while solving ${escapeHtml(p.challenge.toLowerCase())}.
+    </div>`;
+  document.getElementById('execInsight').innerHTML = fallback;
+  try{
+    const res = await api('/api/board-summary', {method:'POST', body: JSON.stringify({ profile: p })});
+    document.getElementById('execInsight').innerHTML = `
+      <div class="note good">
+        <strong style="color:var(--gold)">${escapeHtml(res.summary.headline)}</strong>
+        <ul class="ul">${(res.summary.bullets || []).map(b=>`<li>${escapeHtml(b)}</li>`).join('')}</ul>
+      </div>`;
+  }catch(e){
+    document.getElementById('execInsight').innerHTML = fallback;
+  }
+}
+
+async function safeConnect(){
+  try {
+    const boot = await api('/api/bootstrap');
+    state.boot = boot;
+    setConnection(boot.hasOpenAI ? 'ai' : 'fallback');
+    document.getElementById('heroSub').textContent = `Connected to your Worker backend${boot.hasOpenAI ? ' with AI enabled' : ' with fallback finance reasoning active'} — profiles, scenarios, and chat history can persist across sessions.`;
+    await saveProfile(false);
+    await loadScenarios();
+    await loadChatHistory();
+  } catch (e) {
+    setConnection('offline');
+    document.getElementById('heroSub').textContent = e.message;
+    state.history = [{role:'assistant', content:'Deploy your Worker and paste its URL into the config block to enable persistence and backend-powered chat.'}];
+    renderChat();
+  }
+}
+
+async function saveProfile(showToast=true){
+  state.profile = collectProfile();
+  localStorage.setItem("finsight_profile", JSON.stringify(state.profile));
+  const res = await api('/api/profile/save', {method:'POST', body: JSON.stringify({workspaceId: state.workspaceId, profile: state.profile})});
+  renderDashboard();
+  await renderExecutiveInsight();
+  if(showToast) toast('Profile saved');
+  return res;
+}
+
+async function importCSV(){
+  try{
+    const res = await api('/api/import/csv', {method:'POST', body: JSON.stringify({workspaceId: state.workspaceId, csvText: val('csvText')})});
+    const s = res.suggestedProfile || {};
+    ['revenue','ebitda','debt','equity','netIncome'].forEach(k=>{
+      if(s[k]) document.getElementById(k).value = s[k];
+    });
+    state.profile = collectProfile();
+    localStorage.setItem("finsight_profile", JSON.stringify(state.profile));
+    renderDashboard();
+    await renderExecutiveInsight();
+    runCredit();
+    document.getElementById('importResult').textContent = `Imported ${res.parsed.rowCount} rows. Applied metrics: ${Object.keys(res.parsed.totals).join(', ')}.`;
+    toast('CSV imported');
+  }catch(e){
+    document.getElementById('importResult').textContent = e.message;
+  }
+}
+
+async function saveScenario(){
+  try{
+    state.profile = collectProfile();
+    await api('/api/scenario/save', {method:'POST', body: JSON.stringify({
+      workspaceId: state.workspaceId,
+      scenarioName: val('scenarioName') || 'Scenario',
+      payload: {profile: state.profile}
+    })});
+    await loadScenarios();
+    toast('Scenario saved');
+  }catch(e){ alert(e.message); }
+}
+
+async function loadScenarios(){
+  try{
+    const res = await api('/api/scenario/list?workspaceId=' + encodeURIComponent(state.workspaceId));
+    document.getElementById('scenarioList').innerHTML = (res.scenarios || []).length
+      ? res.scenarios.map(s=>`<div class="scenarioItem"><div class="kv"><span>${escapeHtml(s.scenario_name)}</span><span>${new Date(s.updated_at).toLocaleDateString()}</span></div><div class="scenarioActions"><button class="btn secondary inline" onclick="loadScenario(${Number(s.id)})">Load</button></div></div>`).join('')
+      : '<div class="small">No scenarios saved yet.</div>';
+  }catch(e){
+    document.getElementById('scenarioList').innerHTML = '<div class="small">'+escapeHtml(e.message)+'</div>';
+  }
+}
+
+async function loadScenario(id){
+  try{
+    const res = await api('/api/scenario/get?workspaceId=' + encodeURIComponent(state.workspaceId) + '&id=' + encodeURIComponent(id));
+    const profile = res.scenario?.payload?.profile;
+    if(!profile) throw new Error('Scenario has no profile payload');
+    applyProfileToForm(profile);
+    state.profile = collectProfile();
+    localStorage.setItem("finsight_profile", JSON.stringify(state.profile));
+    renderDashboard();
+    await renderExecutiveInsight();
+    runDCF();
+    runCredit();
+    runBudget();
+    toast('Scenario loaded');
+  }catch(e){ alert(e.message); }
+}
+
+async function runDCF(){
+  try{
+    const body = {
+      initialInvestment: num('dcfInvestment'),
+      wacc: num('dcfWacc'),
+      terminalGrowth: num('dcfTerminalGrowth'),
+      cashFlows: val('dcfCashFlows').split(',').map(x=>Number(x.trim())||0)
+    };
+    const res = await api('/api/dcf', {method:'POST', body: JSON.stringify(body)});
+    const r = res.result;
+    document.getElementById('dcfSummary').innerHTML = `
+      <div class="grid2">
+        <div class="note"><strong style="color:var(--gold)">NPV</strong><br>${money(r.npv)}</div>
+        <div class="note"><strong style="color:var(--gold)">IRR</strong><br>${r.irrPercent.toFixed(2)}%</div>
+      </div>
+      <div class="grid2" style="margin-top:10px">
+        <div class="note"><strong style="color:var(--gold)">Payback</strong><br>${r.paybackPeriod ? r.paybackPeriod.toFixed(2)+' years' : 'Not achieved in forecast'}</div>
+        <div class="note"><strong style="color:var(--gold)">Profitability Index</strong><br>${r.profitabilityIndex.toFixed(3)}</div>
+      </div>`;
+    const labels = ['Investment', ...r.cashFlows.map((_,i)=>'Y'+(i+1)), 'Terminal'];
+    const values = [-r.initialInvestment, ...r.schedule.filter(x=>typeof x.year==='number' && x.year>0).map(x=>x.presentValue), r.terminalPV];
+    chart('dcfChart', 'bar', {labels, datasets:[{data:values, backgroundColor:values.map(v=>v>=0?'rgba(31,217,122,.65)':'rgba(240,80,106,.65)'), borderRadius:4}]}, axesOpts(false));
+    document.getElementById('dcfTable').innerHTML = `
+      <tr><th>Year</th><th>Cash Flow</th><th>Discount Factor</th><th>Present Value</th><th>Cumulative PV</th></tr>
+      ${r.schedule.map(row=>`<tr><td>${row.year}</td><td>${money(row.cashFlow)}</td><td>${Number(row.discountFactor).toFixed(4)}</td><td>${money(row.presentValue)}</td><td>${money(row.cumulativePV)}</td></tr>`).join('')}`;
+    renderDcfSensitivity(body);
+  }catch(e){ alert(e.message); }
+}
+
+function npvLocal(initialInvestment, cashFlows, wacc, terminalGrowth){
+  const rate = wacc/100, growth = terminalGrowth/100;
+  const pv = cashFlows.reduce((sum, cf, idx)=>sum + cf / Math.pow(1 + rate, idx + 1), 0);
+  const lastCF = cashFlows[cashFlows.length - 1] || 0;
+  const terminal = rate > growth ? (lastCF * (1 + growth)) / (rate - growth) : 0;
+  return -initialInvestment + pv + terminal / Math.pow(1 + rate, cashFlows.length || 1);
+}
+
+function renderDcfSensitivity(body){
+  const waccs = [body.wacc - 2, body.wacc, body.wacc + 2];
+  const growths = [body.terminalGrowth - 1, body.terminalGrowth, body.terminalGrowth + 1];
+  const cells = [];
+  waccs.forEach(w=> growths.forEach(g=> {
+    cells.push(`<div class="sensCell"><div class="k">WACC ${w}% · TG ${g}%</div><div class="v">${money(npvLocal(body.initialInvestment, body.cashFlows, w, g))}</div></div>`);
+  }));
+  document.getElementById('dcfSensitivity').innerHTML = `<div class="note" style="margin-top:12px"><strong style="color:var(--gold)">Sensitivity Grid</strong><div class="sensGrid">${cells.join('')}</div></div>`;
+}
+
+async function runCredit(){
+  try{
+    const body = {
+      ebitda: num('crEbitda'),
+      debt: num('crDebt'),
+      equity: num('crEquity'),
+      interestExpense: num('crInterest'),
+      currentAssets: num('crAssets'),
+      currentLiabilities: num('crLiabilities'),
+      netIncome: num('netIncome'),
+      revenue: num('revenue')
+    };
+    const res = await api('/api/credit', {method:'POST', body: JSON.stringify(body)});
+    const r = res.result;
+    document.getElementById('creditSummary').innerHTML = `
+      <div class="note ${r.composite >= 70 ? 'good' : r.composite >= 58 ? 'warn' : 'bad'}"><strong style="color:var(--gold)">Composite Score:</strong> ${r.composite}/100 · ${r.rating}<br><br>
+      Max prudent debt at 3.0x EBITDA is ${money(r.maxPrudentDebt)}. Remaining headroom is ${money(r.debtHeadroom)}.</div>`;
+    chart('creditChart', 'radar', {
+      labels:['Liquidity','Leverage','Coverage','Profitability','Returns','Efficiency'],
+      datasets:[
+        {label:'Your Company',data:[r.scores.liquidity,r.scores.leverage,r.scores.coverage,r.scores.profitability,r.scores.returns,r.scores.efficiency],backgroundColor:'rgba(212,168,75,.12)',borderColor:'#d4a84b',borderWidth:1.5,pointBackgroundColor:'#d4a84b'},
+        {label:'Benchmark',data:[62,58,65,60,57,61],backgroundColor:'rgba(79,163,255,.08)',borderColor:'rgba(79,163,255,.45)',borderWidth:1.2,pointBackgroundColor:'#4fa3ff'}
+      ]
+    }, {
+      plugins:{legend:{labels:{color:'#96a2b8',font:{family:'Plus Jakarta Sans',size:10}}}},
+      scales:{r:{grid:{color:'rgba(255,255,255,.07)'},angleLines:{color:'rgba(255,255,255,.07)'},suggestedMin:0,suggestedMax:100,
+      pointLabels:{color:'#96a2b8',font:{family:'Plus Jakarta Sans',size:10}},ticks:{display:false}}}
+    });
+    const m = r.metrics;
+    document.getElementById('creditRatios').innerHTML = `
+      ${ratioRow('Debt / EBITDA', m.debtToEbitda.toFixed(2)+'x')}
+      ${ratioRow('Debt / Equity', m.debtToEquity.toFixed(2)+'x')}
+      ${ratioRow('Interest Coverage', m.interestCoverage.toFixed(2)+'x')}
+      ${ratioRow('Current Ratio', m.currentRatio.toFixed(2)+'x')}
+      ${ratioRow('Net Margin', (m.netMargin*100).toFixed(1)+'%')}
+      ${ratioRow('ROE', (m.roe*100).toFixed(1)+'%')}`;
+  }catch(e){ alert(e.message); }
+}
+
+function ratioRow(k,v){ return `<div class="kv"><span>${k}</span><span>${v}</span></div>`; }
+
+async function runBudget(){
+  try{
+    const body = {
+      revenueItems: getBudgetItems('revItems'),
+      cogsItems: getBudgetItems('cogsItems'),
+      opexItems: getBudgetItems('opexItems'),
+      depreciation: num('budgetDep')
+    };
+    const res = await api('/api/budget', {method:'POST', body: JSON.stringify(body)});
+    const r = res.result;
+    document.getElementById('budgetSummary').innerHTML = `
+      ${ratioRow('Revenue', money(r.totals.totalRevenue))}
+      ${ratioRow('COGS', money(r.totals.totalCOGS))}
+      ${ratioRow('Gross Profit', money(r.totals.grossProfit))}
+      ${ratioRow('OpEx', money(r.totals.totalOpex))}
+      ${ratioRow('EBITDA', money(r.totals.ebitda))}
+      ${ratioRow('EBIT', money(r.totals.ebit))}
+      ${ratioRow('Tax', money(r.totals.tax))}
+      ${ratioRow('Net Income', money(r.totals.netIncome))}
+      <div class="note" style="margin-top:12px">Gross margin ${pct(r.margins.grossMargin)}, EBITDA margin ${pct(r.margins.ebitdaMargin)}, net margin ${pct(r.margins.netMargin)}.</div>`;
+    chart('budgetChart', 'bar', {
+      labels:['Revenue','COGS','Gross Profit','OpEx','EBITDA','D&A','EBIT','Tax','Net Income'],
+      datasets:[{data:[r.totals.totalRevenue,-r.totals.totalCOGS,r.totals.grossProfit,-r.totals.totalOpex,r.totals.ebitda,-r.totals.depreciation,r.totals.ebit,-r.totals.tax,r.totals.netIncome], backgroundColor:['rgba(31,217,122,.4)','rgba(240,80,106,.55)','rgba(212,168,75,.75)','rgba(240,80,106,.55)','rgba(31,217,122,.4)','rgba(240,80,106,.55)','rgba(212,168,75,.75)','rgba(240,80,106,.55)','rgba(79,163,255,.72)'],borderRadius:4}]}, axesOpts(false));
+  }catch(e){ alert(e.message); }
+}
+
+async function loadChatHistory(){
+  try{
+    const res = await api('/api/chat/history?workspaceId=' + encodeURIComponent(state.workspaceId));
+    state.history = (res.history || []).map(x=>({role:x.role, content:x.content}));
+    if(!state.history.length){
+      state.history = [{role:'assistant', content:'I’m ready. Ask about valuation, leverage, pricing, investor readiness, or how to explain your numbers to a judge.'}];
+    }
+    renderChat();
+  }catch(e){
+    state.history = [{role:'assistant', content:'Worker not connected yet. Once deployed, I’ll answer through your backend.'}];
+    renderChat();
+  }
+}
+
+function renderChat(){
+  const wrap = document.getElementById('chatMsgs');
+  wrap.innerHTML = state.history.map(m=>`<div class="msg ${m.role==='user'?'user':'ai'}">${escapeHtml(m.content)}</div>`).join('');
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+async function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value='';
+  state.history.push({role:'user',content:text});
+  state.history.push({role:'assistant',content:'Thinking…'});
+  renderChat();
+  try{
+    await api('/api/chat/save-user', {method:'POST', body: JSON.stringify({workspaceId: state.workspaceId, content: text})});
+    const res = await api('/api/chat', {method:'POST', body: JSON.stringify({workspaceId: state.workspaceId, profile: state.profile || collectProfile(), messages: state.history.filter(m=>m.content !== 'Thinking…')})});
+    state.history[state.history.length-1] = {role:'assistant', content: res.reply};
+  }catch(e){
+    state.history[state.history.length-1] = {role:'assistant', content:'Connection error: ' + e.message};
+  }
+  renderChat();
+}
+
+function askPreset(q){
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+function exportWorkspace(){
+  const blob = new Blob([JSON.stringify({workspaceId: state.workspaceId, profile: state.profile || collectProfile(), history: state.history}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'finsight-workspace.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function axesOpts(withLegend=true){
+  return {
+    plugins:{legend:{display:withLegend, labels:{color:'#96a2b8',font:{family:'Plus Jakarta Sans',size:11}}}},
+    scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#5e6f8a',font:{family:'Plus Jakarta Sans',size:10}}},
+      y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#5e6f8a',font:{family:'Plus Jakarta Sans',size:10}}}
+    }
+  };
+}
+
+function chart(id, type, data, options){
+  if(state.charts[id]) state.charts[id].destroy();
+  state.charts[id] = new Chart(document.getElementById(id), {type, data, options});
+}
+
+function escapeHtml(s){
+  return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+function escapeAttr(s){
+  return String(s).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+(function init(){
+  hydrateSettings();
+  const local = localStorage.getItem("finsight_profile");
+  if(local){
+    try{ applyProfileToForm(JSON.parse(local)); return; }catch(e){}
+  }
+  applyDemoProfile();
+})();
+</script>
+</body>
+</html>
