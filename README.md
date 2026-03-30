@@ -41,8 +41,8 @@ The frontend is hosted with GitHub Pages and the backend is deployed with Cloudf
 Secrets are stored in Cloudflare Worker secrets and are not included in this repository.
 
 ## Live Demo
-Frontend: [Paste your GitHub Pages link here]  
-Backend: [Paste your Worker URL here]
+Frontend:  
+Backend: https://finsight-worker.goatsatcoding.workers.dev/
 
 ## Submission Notes
 This project was built as a hackathon-ready finance platform with an emphasis on usability and presentation.  
